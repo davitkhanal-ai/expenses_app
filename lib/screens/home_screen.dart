@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-// import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
+import 'add_transaction_screen.dart';
 import '../models/transaction.dart';
 import '../widgets/transaction_list.dart';
-import 'add_transaction_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,6 +18,15 @@ class _HomeScreenState extends State<HomeScreen> {
       _transactions.add(transaction);
       _totalBalance +=
           transaction.isIncome ? transaction.amount : -transaction.amount;
+    });
+  }
+
+  void _deleteTransaction(int index) {
+    setState(() {
+      final transaction = _transactions[index];
+      _totalBalance -=
+          transaction.isIncome ? transaction.amount : -transaction.amount;
+      _transactions.removeAt(index);
     });
   }
 
@@ -58,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Expanded(
-            child: TransactionList(_transactions),
+            child: TransactionList(_transactions, _deleteTransaction),
           ),
         ],
       ),
